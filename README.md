@@ -12,17 +12,39 @@ This project downloads the code from RSS feeds and saves it in Redis Cache using
 
 **Curl Command to Test**
 
-```
-HTTP GET http://localhost:8080/api/rss/fetch-and-save-rss?url=<rss-feed-url>
-```
-
-**Example**
-
-```
-HTTP GET http://localhost:8080/api/rss/fetch-and-save-rss?url=https://example.com/rss.xml
-```
-
+**API: RSS FEED**
 This will download the RSS feed from `https://example.com/rss.xml` and save the code in Redis Cache.
+
+```
+curl --location 'http://localhost:8080/api/rss/fetch-and-save-rss?url=https%3A%2F%2Fdeveloper.nvidia.com%2Fblog%2Ffeed%2F'
+```
+
+**API LeaderBoardSortedSet** 
+
+***Add User to sortedSet***
+```bash
+curl --location --request POST 'http://localhost:8080/sortedset/add/mySortedSet?key=leaderboardOct2023&user=user1&score=1'
+```
+
+***Increment score***
+```bash
+curl --location --request PUT 'http://localhost:8080/sortedset/increment/mySortedSet?key=leaderboardOct2023&user=user1&score=1'
+```
+
+***Fetch Range of users by score***
+```bash
+curl --location --request GET 'http://localhost:8080/sortedset/range/mySortedSet?key=leaderboardOct2023&start=0&end=1000'
+```
+
+***Fetch range of users (Reverse)***
+```bash
+curl --location --request GET 'http://localhost:8080/sortedset/reverse-range/mySortedSet?key=leaderboardOct2023&start=0&end=1000'
+```
+
+***Fetch user rank***
+```bash
+curl --location --request GET 'http://localhost:8080/sortedset/rank/mySortedSet?key=leaderboardOct2023&user=user1'
+```
 
 **Getting Started**
 
@@ -67,3 +89,11 @@ HTTP GET http://localhost:8080/api/rss/fetch-and-save-rss?url=https://example.co
 ```
 
 You can then use RedInsights to view the saved code in Redis Cache.
+
+**Useful commands**
+
+```
+FLUSHDB // Delete all records from dB
+SCAN 0 MATCH * // Get all records
+```
+
