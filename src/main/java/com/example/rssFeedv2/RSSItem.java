@@ -3,6 +3,8 @@ package com.example.rssFeedv2;
 import jakarta.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -14,6 +16,7 @@ public class RSSItem  implements Serializable {
     private String description;
     private String link;
     private Date pubDate;
+    private List<String> tags;
 
     // getters and setters
 
@@ -55,6 +58,14 @@ public class RSSItem  implements Serializable {
 
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
 

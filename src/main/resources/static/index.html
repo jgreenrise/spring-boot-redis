@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed & Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RSS Feed & Quiz Application</h1>
+            <nav>
+                <button id="feedTab" class="tab-btn active">RSS Feeds</button>
+                <button id="quizTab" class="tab-btn">Quiz Mode</button>
+            </nav>
+        </header>
+
+        <!-- RSS Feed Section -->
+        <div id="feedSection" class="section active">
+            <div class="feed-controls">
+                <div class="input-group">
+                    <input type="url" id="rssUrl" placeholder="Enter RSS feed URL" 
+                           value="https://developer.nvidia.com/blog/feed/">
+                    <button id="fetchFeed" class="btn btn-primary">Fetch RSS Feed</button>
+                </div>
+                <div class="filter-group">
+                    <select id="tagFilter">
+                        <option value="">All Tags</option>
+                    </select>
+                    <button id="loadItems" class="btn btn-secondary">Load Items</button>
+                </div>
+            </div>
+            <div id="feedItems" class="feed-items"></div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quizSection" class="section">
+            <div class="quiz-controls">
+                <div class="quiz-settings">
+                    <label for="quizTagFilter">Quiz Category:</label>
+                    <select id="quizTagFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                    <button id="startQuiz" class="btn btn-primary">Start Quiz</button>
+                </div>
+                <div class="quiz-stats">
+                    <span>Score: <span id="score">0</span></span>
+                    <span>Questions: <span id="questionCount">0</span></span>
+                </div>
+            </div>
+            
+            <div id="quizContent" class="quiz-content">
+                <div id="quizWelcome" class="quiz-welcome">
+                    <h2>Welcome to RSS Quiz Mode!</h2>
+                    <p>Test your knowledge about the RSS feed content. Select a category and start the quiz.</p>
+                </div>
+                
+                <div id="quizQuestion" class="quiz-question" style="display: none;">
+                    <h3 id="questionTitle"></h3>
+                    <div id="questionOptions" class="question-options"></div>
+                    <div class="quiz-actions">
+                        <button id="nextQuestion" class="btn btn-primary" style="display: none;">Next Question</button>
+                        <button id="showAnswer" class="btn btn-secondary">Show Answer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
