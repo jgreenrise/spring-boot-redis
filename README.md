@@ -2,7 +2,7 @@
 
 **Project Overview**
 
-This project downloads the code from RSS feeds and saves it in Redis Cache using Spring Boot, Redis, and Gradle.
+This is a Flash Card API application built with Spring Boot, Redis, and Gradle. The application provides RESTful APIs to create, read, update, and delete flash cards. Each flash card contains a question, answer, category, and difficulty level, making it perfect for learning and study applications.
 
 **External Tools**
 
@@ -10,41 +10,112 @@ This project downloads the code from RSS feeds and saves it in Redis Cache using
 * Postman
 * RedInsights
 
-**Curl Command to Test**
+**Flash Card API Documentation**
 
-**API: RSS FEED**
-This will download the RSS feed from `https://example.com/rss.xml` and save the code in Redis Cache.
+## API Endpoints
 
-```
-curl --location 'http://localhost:8080/api/rss/fetch-and-save-rss?url=https%3A%2F%2Fdeveloper.nvidia.com%2Fblog%2Ffeed%2F'
-```
+### **Create Flash Card**
+Create a new flash card with question, answer, category, and difficulty.
 
-**API LeaderBoardSortedSet** 
-
-***Add User to sortedSet***
 ```bash
-curl --location --request POST 'http://localhost:8080/sortedset/add/mySortedSet?key=leaderboardOct2023&user=user1&score=1'
+curl --location --request POST 'http://localhost:8080/api/flashcards' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "question": "What is the capital of France?",
+    "answer": "Paris",
+    "category": "Geography",
+    "difficulty": "EASY"
+}'
 ```
 
-***Increment score***
+### **Get Flash Card by ID**
+Retrieve a specific flash card by its ID.
+
 ```bash
-curl --location --request PUT 'http://localhost:8080/sortedset/increment/mySortedSet?key=leaderboardOct2023&user=user1&score=1'
+curl --location --request GET 'http://localhost:8080/api/flashcards/{flashcard-id}'
 ```
 
-***Fetch Range of users by score***
+### **Get All Flash Cards**
+Retrieve all flash cards in the system.
+
 ```bash
-curl --location --request GET 'http://localhost:8080/sortedset/range/mySortedSet?key=leaderboardOct2023&start=0&end=1000'
+curl --location --request GET 'http://localhost:8080/api/flashcards'
 ```
 
-***Fetch range of users (Reverse)***
+### **Get Flash Cards by Category**
+Retrieve all flash cards in a specific category.
+
 ```bash
-curl --location --request GET 'http://localhost:8080/sortedset/reverse-range/mySortedSet?key=leaderboardOct2023&start=0&end=1000'
+curl --location --request GET 'http://localhost:8080/api/flashcards/category/Geography'
 ```
 
-***Fetch user rank***
+### **Get Flash Cards by Difficulty**
+Retrieve all flash cards with a specific difficulty level.
+
 ```bash
-curl --location --request GET 'http://localhost:8080/sortedset/rank/mySortedSet?key=leaderboardOct2023&user=user1'
+curl --location --request GET 'http://localhost:8080/api/flashcards/difficulty/EASY'
 ```
+
+### **Update Flash Card**
+Update an existing flash card.
+
+```bash
+curl --location --request PUT 'http://localhost:8080/api/flashcards/{flashcard-id}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "question": "What is the capital of France?",
+    "answer": "Paris is the capital and most populous city of France",
+    "category": "Geography",
+    "difficulty": "MEDIUM"
+}'
+```
+
+### **Delete Flash Card**
+Delete a specific flash card by its ID.
+
+```bash
+curl --location --request DELETE 'http://localhost:8080/api/flashcards/{flashcard-id}'
+```
+
+### **Get Flash Card Count**
+Get the total number of flash cards in the system.
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/flashcards/count'
+```
+
+### **Get Random Flash Card**
+Get a random flash card for studying.
+
+```bash
+curl --location --request GET 'http://localhost:8080/api/flashcards/random'
+```
+
+### **Delete All Flash Cards**
+Delete all flash cards from the system (use with caution).
+
+```bash
+curl --location --request DELETE 'http://localhost:8080/api/flashcards'
+```
+
+## Flash Card Model
+
+```json
+{
+    "id": "uuid-string",
+    "question": "What is the capital of France?",
+    "answer": "Paris",
+    "category": "Geography",
+    "difficulty": "EASY",
+    "createdAt": "2023-12-01 10:30:00",
+    "updatedAt": "2023-12-01 10:30:00"
+}
+```
+
+### Difficulty Levels
+- **EASY** - Basic level questions
+- **MEDIUM** - Intermediate level questions  
+- **HARD** - Advanced level questions
 
 **Getting Started**
 
@@ -56,39 +127,55 @@ To get started, you will need to install the following:
 
 Once you have installed the prerequisites, you can clone the project repository and build it using Gradle:
 
-```
-git clone https://github.com/BardAI/rss-feed-to-redis.git
-cd rss-feed-to-redis
+```bash
+git clone <your-repository-url>
+cd flashcard-api
 gradle build
 ```
 
 Once the project is built, you can start the Spring Boot application using the following command:
 
-```
-java -jar build/libs/rss-feed-to-redis.jar
-```
-
-Once the application is running, you can use the curl command to test the functionality:
-
-```
-HTTP GET http://localhost:8080/api/rss/fetch-and-save-rss?url=<rss-feed-url>
+```bash
+java -jar build/libs/rssFeedv2-0.0.1-SNAPSHOT.jar
 ```
 
-You can then use RedInsights to view the saved code in Redis Cache.
+Or you can run it directly with Gradle:
+
+```bash
+./gradlew bootRun
+```
+
+Once the application is running, you can test the flash card APIs using the curl commands provided above.
 
 **Usage**
 
-To use the project, simply send a HTTP GET request to the `/api/rss/fetch-and-save-rss` endpoint with the `url`
-parameter set to the URL of the RSS feed that you want to download.
+To use the Flash Card API, you can interact with the following endpoints:
 
-For example, to download the RSS feed from `https://example.com/rss.xml` and save the code in Redis Cache, you would
-send the following request:
+1. **Create flash cards** by sending POST requests to `/api/flashcards`
+2. **Retrieve flash cards** by sending GET requests to various endpoints
+3. **Update flash cards** by sending PUT requests to `/api/flashcards/{id}`
+4. **Delete flash cards** by sending DELETE requests to `/api/flashcards/{id}`
 
+### Example Usage Flow:
+
+1. Create a new flash card:
+```bash
+curl -X POST http://localhost:8080/api/flashcards \
+-H "Content-Type: application/json" \
+-d '{"question":"What is 2+2?","answer":"4","category":"Math","difficulty":"EASY"}'
 ```
-HTTP GET http://localhost:8080/api/rss/fetch-and-save-rss?url=https://example.com/rss.xml
+
+2. Get all flash cards:
+```bash
+curl http://localhost:8080/api/flashcards
 ```
 
-You can then use RedInsights to view the saved code in Redis Cache.
+3. Get a random flash card for studying:
+```bash
+curl http://localhost:8080/api/flashcards/random
+```
+
+You can use RedInsights or any Redis CLI tool to view the stored data in Redis Cache.
 
 **Useful commands**
 
