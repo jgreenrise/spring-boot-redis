@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RSSItem, LeaderboardEntry } from '../types';
+import { RSSItem, FlashCard, LeaderboardEntry } from '../types';
 
 // Use relative URLs since we have a proxy configured in package.json
 const API_BASE_URL = '';
@@ -43,6 +43,38 @@ export const rssApi = {
         pubDate: new Date(Date.now() - 172800000).toISOString(),
       },
     ];
+  },
+};
+
+// Flash Card API
+export const flashCardApi = {
+  createFlashCard: async (flashCard: Omit<FlashCard, 'id' | 'createdDate' | 'reviewCount'>): Promise<FlashCard> => {
+    const response = await api.post('/api/flashcards', flashCard);
+    return response.data;
+  },
+
+  getAllFlashCards: async (): Promise<FlashCard[]> => {
+    const response = await api.get('/api/flashcards');
+    return response.data;
+  },
+
+  getFlashCard: async (id: string): Promise<FlashCard> => {
+    const response = await api.get(`/api/flashcards/${id}`);
+    return response.data;
+  },
+
+  updateFlashCard: async (id: string, flashCard: Partial<FlashCard>): Promise<FlashCard> => {
+    const response = await api.put(`/api/flashcards/${id}`, flashCard);
+    return response.data;
+  },
+
+  deleteFlashCard: async (id: string): Promise<void> => {
+    await api.delete(`/api/flashcards/${id}`);
+  },
+
+  markAsReviewed: async (id: string): Promise<FlashCard> => {
+    const response = await api.post(`/api/flashcards/${id}/review`);
+    return response.data;
   },
 };
 

@@ -6,6 +6,15 @@ export interface RSSItem {
   pubDate: string;
 }
 
+export interface FlashCard {
+  id: string;
+  front: string;
+  back: string;
+  createdDate: string;
+  lastReviewed?: string;
+  reviewCount: number;
+}
+
 export interface LeaderboardEntry {
   user: string;
   score: number;
